@@ -14,7 +14,7 @@
 <title>OhStoopKid · TnL PvP Stat Calculator</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-:root{--bg:#07070f;--surface:#0e0e1a;--card:#151523;--card2:#1c1c2e;--border:rgba(140,120,200,0.18);--border2:rgba(140,120,200,0.32);--gold:#d4b45a;--gold2:#f5df96;--purple:#7c5cbf;--purple2:#b899f0;--text:#f2eeff;--muted:#9b90b0;--dim:#6a5e80;--hit:#72c8ff;--crit:#ffb366;--heavy:#ff8585;--cc:#bcb7ff;--green:#6ef5ce;--red:#f06060;--radius:12px;--radius-sm:8px}
+:root{--bg:#07070f;--surface:#0e0e1a;--card:#151523;--card2:#1c1c2e;--border:rgba(140,120,200,0.18);--border2:rgba(140,120,200,0.32);--gold:#d4b45a;--gold2:#f5df96;--purple:#7c5cbf;--purple2:#b899f0;--text:#f2eeff;--muted:#9b90b0;--dim:#6a5e80;--hit:#72c8ff;--crit:#ffb366;--heavy:#ff8585;--cc:#bcb7ff;--sdb:#ffd700;--green:#6ef5ce;--red:#f06060;--radius:12px;--radius-sm:8px}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:16px;min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(ellipse 80% 40% at 50% -10%,rgba(124,92,191,0.15) 0%,transparent 70%),repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(140,120,200,0.04) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(140,120,200,0.04) 40px);pointer-events:none;z-index:0}
@@ -31,14 +31,15 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 .persp-btn{padding:5px 14px;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;background:none;border:none;color:var(--muted);cursor:pointer;letter-spacing:1px;transition:all 0.2s}
 .persp-btn.active.atk{background:rgba(255,159,67,0.2);color:var(--crit)}
 .persp-btn.active.def{background:rgba(162,155,254,0.2);color:var(--cc)}
-.nav{display:grid;grid-template-columns:repeat(7,1fr);background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
-.nav-btn{padding:7px 2px;background:none;border:none;color:var(--muted);font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;border-bottom:2px solid transparent;text-transform:uppercase}
+.nav{display:grid;grid-template-columns:repeat(8,1fr);background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-btn{padding:4px 1px;background:none;border:none;color:var(--muted);font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;border-bottom:2px solid transparent;text-transform:uppercase}
 .nav-btn .nav-icon{font-size:13px}
 .nav-btn.active{color:var(--text);border-bottom-color:var(--gold)}
 .nav-btn.active.tab-hit{border-bottom-color:var(--hit);color:var(--hit)}
 .nav-btn.active.tab-crit{border-bottom-color:var(--crit);color:var(--crit)}
 .nav-btn.active.tab-heavy{border-bottom-color:var(--heavy);color:var(--heavy)}
 .nav-btn.active.tab-cc{border-bottom-color:var(--cc);color:var(--cc)}
+.nav-btn.active.tab-sdb{border-bottom-color:var(--sdb);color:var(--sdb)}
 .nav-btn.active.tab-formula{border-bottom-color:var(--purple2);color:var(--purple2)}
 .nav-btn.active.tab-patch{border-bottom-color:var(--gold);color:var(--gold)}
 .nav-btn.active.tab-resources{border-bottom-color:var(--green);color:var(--green)}
@@ -59,7 +60,7 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 .version-note{text-align:center;font-size:12px;color:var(--muted);margin-top:16px;letter-spacing:1px}
 .section{display:none;padding:14px}.section.active{display:block}
 .rule-banner{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;color:var(--text);margin-bottom:12px;line-height:1.5}
-.rule-banner.hit-rule{border-left-color:var(--hit)}.rule-banner.crit-rule{border-left-color:var(--crit)}.rule-banner.heavy-rule{border-left-color:var(--heavy)}.rule-banner.cc-rule{border-left-color:var(--cc)}
+.rule-banner.hit-rule{border-left-color:var(--hit)}.rule-banner.crit-rule{border-left-color:var(--crit)}.rule-banner.heavy-rule{border-left-color:var(--heavy)}.rule-banner.cc-rule{border-left-color:var(--cc)}.rule-banner.sdb-rule{border-left-color:var(--sdb)}
 .rule-banner strong{color:var(--gold2)}.rule-banner .rnote{font-size:12px;color:var(--text);margin-top:4px;display:block}
 .collapsible{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:12px;overflow:hidden}
 .coll-hdr{padding:10px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
@@ -106,7 +107,7 @@ input.base-val{-moz-appearance:textfield}
 .result-main::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
 .result-label{font-size:12px;color:var(--text);text-transform:uppercase;letter-spacing:2px;margin-bottom:5px}
 .result-pct{font-family:'Cinzel',serif;font-size:48px;font-weight:700;line-height:1;margin-bottom:3px;background:linear-gradient(135deg,var(--gold2),var(--purple2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.result-pct.guaranteed{-webkit-text-fill-color:var(--hit);background:none}.result-pct.zero{-webkit-text-fill-color:var(--red);background:none}
+.result-pct.guaranteed{-webkit-text-fill-color:var(--hit);background:none}.result-pct.zero{-webkit-text-fill-color:var(--red);background:none}.result-pct.negative{-webkit-text-fill-color:var(--red);background:none}
 .result-status{font-size:12px;color:var(--muted);margin-bottom:8px;line-height:1.4}
 .result-gap-row{display:flex;justify-content:center;gap:14px}
 .gap-item{display:flex;flex-direction:column;align-items:center;gap:2px}
@@ -181,14 +182,14 @@ input.base-val{-moz-appearance:textfield}
 /* ── RESPONSIVE BREAKPOINTS ───────────────────────────────────────────── */
 @media (min-width: 768px) {
   .app { max-width: 1200px; padding-bottom: 40px; }
-  .header { padding: 20px 32px 14px; }
+  .header { padding: 12px 24px 10px; }
   .header h1 { font-size: 28px; }
   .header-sub { font-size: 13px; }
   .patch-badge { font-size: 12px; padding: 4px 14px; }
-  .persp-bar { padding: 10px 32px; }
+  .persp-bar { padding: 8px 24px; }
   .persp-btn { padding: 6px 20px; font-size: 13px; }
-  .nav { grid-template-columns: repeat(7,1fr); }
-  .nav-btn { padding: 10px 6px; font-size: 11px; }
+  .nav { grid-template-columns: repeat(8,1fr); }
+  .nav-btn { padding: 6px 5px; font-size: 12px; }
   .nav-btn .nav-icon { font-size: 16px; }
   .section { padding: 20px 24px; }
   /* Dashboard layout for stat tabs */
@@ -276,6 +277,7 @@ input.base-val{-moz-appearance:textfield}
   <button class="nav-btn tab-crit" onclick="switchTab('crit',this)"><span class="nav-icon">⚡</span>Crit/End</button>
   <button class="nav-btn tab-heavy" onclick="switchTab('heavy',this)"><span class="nav-icon">💥</span>Heavy</button>
   <button class="nav-btn tab-cc" onclick="switchTab('cc',this)"><span class="nav-icon">🔗</span>CC</button>
+  <button class="nav-btn tab-sdb" onclick="switchTab('sdb',this)"><span class="nav-icon">🎓</span>SDB/SDR</button>
   <button class="nav-btn tab-formula" onclick="switchTab('formula',this)"><span class="nav-icon">📐</span>Formulas</button>
   <button class="nav-btn tab-patch" onclick="switchTab('patch',this)"><span class="nav-icon">⚡</span>Patch</button>
   <button class="nav-btn tab-resources" onclick="switchTab('resources',this)"><span class="nav-icon">🔗</span>Links</button>
@@ -423,12 +425,58 @@ input.base-val{-moz-appearance:textfield}
   <div class="cmp-section" id="heavy-cmp"></div>
 </div></div>
 
+<!-- SDB / SDR -->
+<div class="section stat-section" id="sec-sdb"><div class="dash-left">
+  <div class="rule-banner sdb-rule">
+    <strong>Skill Damage Boost</strong> increases damage output.<br>
+    <strong>Skill Damage Resistance</strong> reduces incoming damage.<br>
+    Formula: (1 + SDB/(SDB+1000)) x (1 - SDR/(SDR+1000)) x 100%
+    <span class="rnote">No mode-specific caps — fixed denominators. SDB multiplier applies to all skill damage dealt; SDR multiplier applies to all skill damage received.</span>
+  </div>
+  <div class="collapsible">
+    <div class="coll-hdr" onclick="toggleColl(this)"><span class="ch-title">How SDB &amp; SDR Work</span><span class="ch-arr">▼</span></div>
+    <div class="coll-body">
+      <p>Skill Damage Boost increases the damage of all your skill attacks. Skill Damage Resistance reduces the damage you take from enemy skills.</p>
+      <p><span class="hi">Unlike other stat pairs:</span> SDB and SDR use fixed denominators built into the formula. There are no separate cap values per content mode — the formula is always (1 + SDB/(SDB+1000)) x (1 - SDR/(SDR+1000)).</p>
+      <p><span class="hi">The multiplication mechanic:</span> Both effects stack multiplicatively. A 1000 SDB gives 50% damage increase. A 1000 SDR subtracts 50% from incoming skill damage. Combined: 1.5 x 0.5 = 0.75x as much damage as base.</p>
+      <p class="cnote">SDB and SDR are purely offensive and defensive multipliers for skill-based damage — they don't affect attack type checks like crit or evasion, but they scale with every skill hit you land or receive.</p>
+    </div>
+  </div>
+  <div class="preset-grid">
+    <div class="preset-col">
+      <div class="preset-col-label lbl-t3">🟢 T3 Meta</div>
+      <!-- <button class="bench-btn t3" onclick="loadBench('sdb',1000,1000,'1k sdb vs 1k sdr','t3')">1k SDB vs 1k SDR</button> -->
+      <!-- <button class="bench-btn t3" onclick="loadBench('sdb',800,1000,'800 sdb vs 1k sdr','t3')">800 SDB vs 1k SDR</button> -->
+    </div>
+    <div class="preset-col">
+      <div class="preset-col-label lbl-zero">🩷 Zero Stat</div>
+      <!-- <button class="bench-btn zero-preset" onclick="loadBench('sdb',1000,0,'1k sdb vs zero sdr','zero')">1k SDB vs Zero SDR</button> -->
+      <!-- <button class="bench-btn zero-preset" onclick="loadBench('sdb',0,1000,'zero sdb vs 1k sdr','zero')">Zero SDB vs 1k SDR</button> -->
+    </div>
+    <div class="preset-col">
+      <div class="preset-col-label lbl-cap">🔴 Cap Thresholds</div>
+      <!-- <button class="bench-btn cap-preset" onclick="loadBench('sdb',500,1000,'balanced 500 sdb vs 1k sdr','cap')">500 SDB vs 1k SDR</button> -->
+      <!-- <button class="bench-btn cap-preset" onclick="loadBench('sdb',1000,500,'1k sdb vs 500 sdr','cap')">1k SDB vs 500 SDR</button> -->
+    </div>
+  </div>
+  </div><div class="dash-right">
+  <div class="slider-grid">
+    <div class="slider-card atk-card"><div class="slider-card-label" id="sdb-atk-lbl">⚔ Your SDB</div><input type="number" class="slider-value atk-val" id="sdb-atk-val" value="1100" oninput="syncSliderFromInput('sdb-atk');trackSlider('sdb');calc('sdb')"/><input type="range" min="0" max="2000" value="1000" step="25" id="sdb-atk" oninput="syncSliderDisplay('sdb-atk-val');trackSlider('sdb');calc('sdb')"/><div class="slider-sub">Skill Damage Boost</div></div>
+    <div class="slider-card def-card"><div class="slider-card-label" id="sdb-def-lbl">🛡 Opp SDR</div><input type="number" class="slider-value def-val" id="sdb-def-val" value="900" oninput="syncSliderFromInput('sdb-def');trackSlider('sdb');calc('sdb')"/><input type="range" min="0" max="2000" value="1000" step="25" id="sdb-def" oninput="syncSliderDisplay('sdb-def-val');trackSlider('sdb');calc('sdb')"/><div class="slider-sub">Skill Damage Resistance</div></div>
+  </div>
+  <div class="mode-row" id="sdb-modes"></div>
+  <div class="result-main"><div class="result-label" id="sdb-rlbl">Skill Damage Multiplier</div><div class="result-pct" id="sdb-pct">—</div><div class="result-status" id="sdb-status"></div><div class="result-gap-row"><div class="gap-item"><div class="gap-label">SDB</div><div class="gap-val" id="sdb-rg">—</div></div><div class="gap-item"><div class="gap-label">SDR</div><div class="gap-val" id="sdb-eg">—</div></div><div class="gap-item"><div class="gap-label" id="sdb-tl">Multiplier</div><div class="gap-val" id="sdb-tv">—</div></div></div></div>
+  <div class="mode-results" id="sdb-mr"></div>
+  <div class="analysis" id="sdb-an"></div>
+  <div class="cmp-section" id="sdb-cmp"></div>
+</div></div>
+
 <!-- CC CHANCE -->
 <div class="section stat-section" id="sec-cc"><div class="dash-left">
   <div class="rule-banner cc-rule">
     <strong>Base % always active</strong> — CC is never fully blocked. No hard 0% floor.<br>
-    Gap &gt; 0: CC% = Base + MissBase × [gap/(250+gap)] × 100%<br>
-    Gap &lt; 0: CC% = Base × [1 − |gap|/(250+|gap|)] × 100%
+    Gap &gt; 0: CC% = Base + MissBase x [gap/(250+gap)] x 100%<br>
+    Gap &lt; 0: CC% = Base x [1 - |gap|/(250+|gap|)] x 100%
     <span class="rnote">Real T3: CC Chance ~3,100 / CC Resist ~3,400 unbuffed. Resist edges chance at base gear. Both sides have buffs that push higher — timing matters.</span>
   </div>
   <div class="collapsible">
@@ -537,11 +585,11 @@ input.base-val{-moz-appearance:textfield}
 </div>
 <script>
 let P='atk';
-const CAPS={hit:{ow:[4500,3000],bf:[3000,2000],ar:[2250,1500]},crit:{ow:[4500,3000],bf:[3000,2000],ar:[2250,1500]},heavy:{ow:[4500,3000],bf:[3000,2000],ar:[2250,1500]},cc:{ow:[1800,1200],bf:[1200,800],ar:[900,600]}};
+const CAPS={hit:{ow:[4500,3000],bf:[3000,2000],ar:[2250,1500]},crit:{ow:[4500,3000],bf:[3000,2000],ar:[2250,1500]},heavy:{ow:[4500,3000],bf:[3000,2000],ar:[2250,1500]},cc:{ow:[1800,1200],bf:[1200,800],ar:[900,600]},sdb:{ow:[1000,700],bf:[1000,700],ar:[1000,700]}};
 const MK=['pre','ow','bf','ar'],ML={pre:'Pre',ow:'Open W',bf:'Battlegrounds',ar:'Arena'};
 let AM={hit:'ow',crit:'ow',heavy:'ow',cc:'ow'};
 
-function setPersp(p,btn){if(typeof gtag!=='undefined')gtag('event','perspective_toggle',{perspective:p});P=p;document.querySelectorAll('.persp-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');['hit','crit','heavy','cc'].forEach(t=>{updPL(t);calc(t);});}
+function setPersp(p,btn){if(typeof gtag!=='undefined')gtag('event','perspective_toggle',{perspective:p});P=p;document.querySelectorAll('.persp-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');['hit','crit','heavy','cc','sdb'].forEach(t=>{updPL(t);calc(t);});}
 
 function updPL(t){
   const ia=P==='atk';
@@ -549,7 +597,8 @@ function updPL(t){
     hit:{al:ia?'⚔ Your Hit':'⚔ Opp Hit',dl:ia?'🛡 Opp Evasion':'🛡 Your Evasion',rl:ia?'Attacker Hit Chance':'Your Dodge Chance',tl:ia?'Dodge %':'Hit % On You'},
     crit:{al:ia?'⚔ Your Crit':'⚔ Opp Crit',dl:ia?'🛡 Opp Endurance':'🛡 Your Endurance',rl:ia?'Crit Land Chance':'Crit Blocked %',tl:ia?'Glancing %':'Your Glancing'},
     heavy:{al:ia?'⚔ Your Heavy Atk':'⚔ Opp Heavy Atk',dl:ia?'🛡 Opp Heavy Eva':'🛡 Your Heavy Eva',rl:ia?'Heavy Proc Chance':'Heavy Resisted %',tl:ia?'Def Reduce':'Your Resistance'},
-    cc:{al:ia?'⚔ CC Chance':'⚔ Opp CC Chance',dl:ia?'🛡 CC Resist':'🛡 Your CC Resist',rl:ia?'CC Land Chance':'CC Resisted %',tl:ia?'Base Floor':'Your Floor'}
+    cc:{al:ia?'⚔ CC Chance':'⚔ Opp CC Chance',dl:ia?'🛡 CC Resist':'🛡 Your CC Resist',rl:ia?'CC Land Chance':'CC Resisted %',tl:ia?'Base Floor':'Your Floor'},
+    sdb:{al:ia?'⚔ Your SDB':'⚔ Opp SDB',dl:ia?'🛡 Opp SDR':'🛡 Your SDR',rl:ia?'Skill Damage Multiplier':'Received Damage Multiplier',tl:ia?'Multiplier':'Resistance'}
   };
   const c=m[t];
   document.getElementById(t+'-atk-lbl').textContent=c.al;
@@ -561,9 +610,34 @@ function updPL(t){
 function ga(t){return parseInt(document.getElementById(t+(P==='atk'?'-atk':'-def')).value);}
 function gd(t){return parseInt(document.getElementById(t+(P==='atk'?'-def':'-atk')).value);}
 
-function hitC(a,d,c,n){const r=d-a;if(r<=0)return 100;const e=n?r:Math.min(r,c[1]);const result=100-(e/(e+1000))*100;return parseFloat(result.toFixed(1));}
-function critC(a,d,c,n){const r=a-d;if(r<=0)return 0;const eff=n?r:Math.min(r,c[0]);const result=(eff/(eff+1000))*100;return parseFloat(result.toFixed(1));}
-function ccC(a,d,c,n,Z,W){const r=a-d;let e=n?r:(r>0?Math.min(r,c[0]):Math.max(r,-c[1]));let result;if(e>=0)result=(Z+W*(e/(250+e)))*100;else{const x=Math.abs(e);result=(Z*(1-x/(250+x)))*100;}return parseFloat(result.toFixed(1));}
+function hitC(a,d,c,n){
+  const r=d-a;
+  if(r<=0)return 100;
+  const e=n?r:Math.min(r,c[1]);
+  const result=100-(e/(e+1000))*100;
+  return parseFloat(result.toFixed(1));
+}
+function critC(a,d,c,n){
+  const r=a-d;
+  if(r<=0)return 0;
+  const eff=n?r:Math.min(r,c[0]);
+  const result=(eff/(eff+1000))*100;
+  return parseFloat(result.toFixed(1));
+}
+function sdbC(sdb,sdr){
+  const boost=(1+(sdb/(sdb+1000)));
+  const reduce=(1-(sdr/(sdr+1000)));
+  const result=boost*reduce;
+  return parseFloat(result.toFixed(4));
+}
+function ccC(a,d,c,n,Z,W){
+  const r=a-d;
+  let e=n?r:(r>0?Math.min(r,c[0]):Math.max(r,-c[1]));
+  let result;
+  if(e>=0)result=(Z+W*(e/(250+e)))*100;
+  else{const x=Math.abs(e);result=(Z*(1-x/(250+x)))*100;}
+  return parseFloat(result.toFixed(1));
+}
 
 function renderModes(t){
   const el=document.getElementById(t+'-modes'),caps=CAPS[t];
@@ -623,6 +697,33 @@ function calc(t){
     else if(rg<=3000)an=`<div class="a-title">High Evasion — BG Cap Fires</div>Gap +${rg.toLocaleString()}. BG neg cap (−2,000) kicks in: ${(100-hitC(hitVal,evaVal,CAPS.hit.bf,false)).toFixed(1)}% dodge (vs ${dodgePct.toFixed(1)}% uncapped). Arena: ${(100-hitC(hitVal,evaVal,CAPS.hit.ar,false)).toFixed(1)}%.`;
     else an=`<div class="a-title">Extreme Evasion — All Caps Fire</div>Gap +${rg.toLocaleString()}. Pre-patch: ${dodgePct.toFixed(1)}% dodge → OW: ${(100-hitC(hitVal,evaVal,CAPS.hit.ow,false)).toFixed(1)}% → BG: ${(100-hitC(hitVal,evaVal,CAPS.hit.bf,false)).toFixed(1)}% → Arena: ${(100-hitC(hitVal,evaVal,CAPS.hit.ar,false)).toFixed(1)}%. Zero-hit builds benefit most from floor protection here.`;
     document.getElementById('hit-an').innerHTML=an;
+
+  } else if(t==='sdb'){
+    const sdbVal=parseInt(document.getElementById('sdb-atk-val').value);
+    const sdrVal=parseInt(document.getElementById('sdb-def-val').value);
+    mp=sdbC(sdbVal,sdrVal);
+    rg=sdbVal;eg=sdrVal;
+    const isDef=P==='def';
+    const boost=(1+(sdbVal/(sdbVal+1000)));
+    const reduce=(1-(sdrVal/(sdrVal+1000)));
+    const pe=document.getElementById('sdb-pct');
+    const displayPercent=isDef?(100-mp*100):-(100-mp*100);
+    pe.textContent=displayPercent.toFixed(1)+'%';
+    pe.className='result-pct'+(displayPercent<0?' negative':'');
+    if(isDef){
+      document.getElementById('sdb-status').textContent=`You reduce incoming skill damage by ${displayPercent.toFixed(1)}%`;
+    } else {
+      document.getElementById('sdb-status').textContent=`Your skills deal ${displayPercent.toFixed(1)}% damage`;
+    }
+    document.getElementById('sdb-rg').textContent=sdbVal.toLocaleString();
+    document.getElementById('sdb-rg').className='gap-val pos';
+    document.getElementById('sdb-eg').textContent=sdrVal.toLocaleString();
+    document.getElementById('sdb-eg').className='gap-val neg';
+    document.getElementById('sdb-tv').textContent=displayPercent.toFixed(1)+'%';
+    document.getElementById('sdb-tv').className='gap-val';
+    let an='';
+  if(sdrVal>1500)an+='<br><br><strong>High Enemy SDR:</strong> Enemy skill resistance is high. At '+sdrVal+' SDR, they take '+(reduce*100).toFixed(1)+'% of baseline skill damage.';
+    document.getElementById('sdb-an').innerHTML=an;
 
   } else if(t==='crit'||t==='heavy'){
     const atkRaw=parseInt(document.getElementById(t+'-atk-val').value);
@@ -691,9 +792,11 @@ function calc(t){
     const W2=1-Z2;
     if(t==='hit'){const hv=parseInt(document.getElementById('hit-atk').value),ev=parseInt(document.getElementById('hit-def').value);const hc=hitC(hv,ev,c,nP);ap=P==='def'?(100-hc):hc;dp2=P==='def'?hc.toFixed(1)+'% hit on you':(100-hc).toFixed(1)+'% dodge';const r=ev-hv;cap2=!nP&&r>0&&r>c[1];}
     else if(t==='crit'||t==='heavy'){const ar2=parseInt(document.getElementById(t+'-atk').value),dr2=parseInt(document.getElementById(t+'-def').value);ap=critC(ar2,dr2,c,nP);const r=ar2-dr2;cap2=!nP&&r>0&&r>c[0];}
+    else if(t==='sdb'){const sb=parseInt(document.getElementById('sdb-atk').value),sr=parseInt(document.getElementById('sdb-def').value);const bst=(1+(sb/(sb+1000)));const red=(1-(sr/(sr+1000)));ap=P==='def'?(1-red):(bst-1);dp2=P==='def'?((1-red)*100).toFixed(1)+'% reduced':((bst-1)*100).toFixed(1)+'% boost';}
     else{const ccA2=parseInt(document.getElementById('cc-atk').value),ccD2=parseInt(document.getElementById('cc-def').value),ccIs=P==='def';const ccAx=ccA2,ccDx=ccD2;ap=ccC(ccAx,ccDx,c,nP,Z2,W2);dp2=ccC(ccDx,ccAx,c,nP,Z2,W2).toFixed(1)+'%';const r=ccA2-ccD2;cap2=!nP&&r>0&&r>c[0];fl=!nP&&r<0&&Math.abs(r)>c[1];}
     const badge=cap2?`<div class="cap-tag">ceiling</div>`:fl?`<div class="floor-tag">floor</div>`:'';
     const dr=dp2?`<div class="mr-def">🛡 ${dp2}</div>`:'';
+    if(t==='sdb')return`<div class="mrc"><div class="mr-label">${ML[k]}</div><div class="mr-atk">${typeof ap==='number'?(ap*100).toFixed(1)+'%':ap}</div>${dr}${badge}</div>`;
     return`<div class="mrc"><div class="mr-label">${ML[k]}</div><div class="mr-atk">${typeof ap==='number'?ap.toFixed(1)+'%':ap}</div>${dr}${badge}</div>`;
   }).join('');
 
@@ -705,16 +808,18 @@ function calc(t){
     const c2=CAPS[t][m.k];let pre,post;
     if(t==='hit'){const hv=parseInt(document.getElementById('hit-atk').value),ev=parseInt(document.getElementById('hit-def').value);const preH=hitC(hv,ev,null,true),postH=hitC(hv,ev,c2,false);pre=P==='def'?(100-preH):preH;post=P==='def'?(100-postH):postH;}
     else if(t==='crit'||t==='heavy'){const ar3=parseInt(document.getElementById(t+'-atk').value),dr3=parseInt(document.getElementById(t+'-def').value);pre=critC(ar3,dr3,null,true);post=critC(ar3,dr3,c2,false);}
+    else if(t==='sdb'){const sb3=parseInt(document.getElementById('sdb-atk').value),sr3=parseInt(document.getElementById('sdb-def').value);const bst3=(1+(sb3/(sb3+1000)));const red3=(1-(sr3/(sr3+700)));pre=post=P==='def'?(1-red3):(bst3-1);}
     else{const ccA3=parseInt(document.getElementById('cc-atk').value),ccD3=parseInt(document.getElementById('cc-def').value),ccIs3=P==='def';const ccAy=ccA3,ccDy=ccD3;pre=ccC(ccAy,ccDy,null,true,Z3,W3);post=ccC(ccAy,ccDy,c2,false,Z3,W3);}
-    const d=Math.round((post-pre)*10)/10,dc=d>0.5?'better':d<-0.5?'worse':'same',ds=d===0?'Same':(d>0?'+':'')+d.toFixed(1)+'%';
-    return`<div class="cmp-row"><span class="cr-mode">${m.l}</span><span class="cr-pre">${pre.toFixed(1)}%</span><span class="cr-post">${post.toFixed(1)}%</span><span class="cr-diff ${dc}">${ds}</span></div>`;
+    const d=Math.round((post-pre)*10)/10,dc=d>0.5?'better':d<-0.5?'worse':'same',ds=d===0?'Same':(d>0?'+':'')+d.toFixed(1)+(t==='sdb'?'×':'%');
+    const preS=t==='sdb'?(pre*100).toFixed(1)+'%':pre.toFixed(1)+'%',postS=t==='sdb'?(post*100).toFixed(1)+'%':post.toFixed(1)+'%';
+    return`<div class="cmp-row"><span class="cr-mode">${m.l}</span><span class="cr-pre">${preS}</span><span class="cr-post">${postS}</span><span class="cr-diff ${dc}">${ds}</span></div>`;
   }).join('');
 
   renderModes(t);
 }
 
 function setGap(id,val,cls){const el=document.getElementById(id);el.textContent=(val>=0?'+':'')+val.toLocaleString();el.className='gap-val '+cls;}
-function switchTab(t,btn){if(typeof gtag!=='undefined')gtag('event','tab_view',{tab:t});document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('sec-'+t).classList.add('active');btn.classList.add('active');if(['hit','crit','heavy','cc'].includes(t))calc(t);}
+function switchTab(t,btn){if(typeof gtag!=='undefined')gtag('event','tab_view',{tab:t});document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('sec-'+t).classList.add('active');btn.classList.add('active');if(['hit','crit','heavy','cc','sdb'].includes(t))calc(t);}
 function loadBench(t,av,dv,label,ptype){
   document.getElementById(t+'-atk').value=av;
   document.getElementById(t+'-def').value=dv;
@@ -722,7 +827,9 @@ function loadBench(t,av,dv,label,ptype){
   if(typeof gtag!=='undefined')gtag('event','preset_click',{tab:t,preset_type:ptype||'t3',preset_label:label||av+'v'+dv});
 }
 function toggleColl(h){h.classList.toggle('open');h.nextElementSibling.classList.toggle('open');if(h.classList.contains('open')&&typeof gtag!=='undefined'){const tab=h.closest('.section')?h.closest('.section').id.replace('sec-',''):'unknown';gtag('event','explanation_open',{tab:tab});}}
-['hit','crit','heavy','cc'].forEach(t=>{updPL(t);renderModes(t);calc(t);});
+['hit','crit','heavy','cc','sdb'].forEach(t=>{updPL(t);renderModes(t);calc(t);});
 </script>
 </body>
 </html>
+
+
